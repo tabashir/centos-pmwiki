@@ -1,8 +1,8 @@
-FROM centos:latest
+FROM centos:7
 MAINTAINER "Jeff Geiger" <jeff@geigerlabs.io>
 ENV PMWIKI_VERSION 2.2.85
 
-RUN yum install -y httpd php && yum clean all && \
+RUN yum makecache fast && yum install -y httpd php && yum clean all && \
     curl -k -o /tmp/pmwiki-${PMWIKI_VERSION}.tgz https://pkgs.blackops.blue/other/pmwiki-${PMWIKI_VERSION}.tgz && \
     tar -xvzC /tmp/ -f /tmp/pmwiki-${PMWIKI_VERSION}.tgz && \
     cp -r /tmp/pmwiki-${PMWIKI_VERSION}/* /var/www/html/ && \
