@@ -1,8 +1,7 @@
 repo = tabashir
 name = pmwiki
 fullname = $(repo)/$(name)
-#fullname = "jeffgeiger/centos-pmwiki"
-vol_dir = /local/docker/volumes
+vol_dir = /local/docker/volumes/pmwiki
 html_dir = /var/www/html
 
 help: env
@@ -27,13 +26,13 @@ refresh:
 	docker build -t $(fullname) .
 
 start:
-	docker run -d --name $(name) -v $(vol_dir)/pmwiki/pub:$(html_dir)/pub -v $(vol_dir)/pmwiki/local:$(html_dir)/local -v $(vol_dir)/pmwiki/cookbook:$(html_dir)/cookbook -v $(vol_dir)/pmwiki/wiki.d:$(html_dir)/wiki.d -p 50060:80 $(fullname)
+	docker run -d --name $(name) -v $(vol_dir)/pub:$(html_dir)/pub -v $(vol_dir)/local:$(html_dir)/local -v $(vol_dir)/cookbook:$(html_dir)/cookbook -v $(vol_dir)/wiki.d:$(html_dir)/wiki.d -p 50060:80 $(fullname)
 
 stop:
-	docker stop HIAWATHA
-	docker rm $(docker ps -a -q)
+	docker stop $(name)
+	docker ps -aqf "ancestor=$(fullname)" | xargs --no-run-if-empty docker rm
 
 clean:
-	-@docker images -q $(fullname) | xargs docker rmi
+	docker images -q $(fullname) | xargs --no-run-if-empty docker rmi
 
 
