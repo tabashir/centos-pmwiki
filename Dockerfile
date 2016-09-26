@@ -9,7 +9,8 @@ RUN yum makecache fast && yum install -y httpd php && yum clean all && \
     mkdir /var/www/html/wiki.d/ &&  \
     chown -R apache:apache /var/www/html
 
-COPY index.php /var/www/html/
+COPY files/index.php /var/www/html/
+COPY files/static_folder.conf /etc/httpd/conf.d/
 
 EXPOSE 80
 
